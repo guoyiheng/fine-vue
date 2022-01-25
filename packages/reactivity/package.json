@@ -1,0 +1,9 @@
+{
+  "name": "@fine-vue/reactivity",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "guoyiheng",
+  "license": "ISC"
+}
