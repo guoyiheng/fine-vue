@@ -1,8 +1,9 @@
 {
-  "name": "fine-vue",
+  "name": "fvue",
   "version": "0.0.1",
+  "private": true,
   "description": "",
-  "author": "",
+  "author": "guoyiheng",
   "license": "ISC",
   "keywords": [],
   "main": "index.js",

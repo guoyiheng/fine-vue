@@ -1,0 +1,28 @@
+{
+  "name": "@fvue/shared",
+  "version": "0.0.1",
+  "description": "internal utils shared across @vue packages",
+  "author": "guoyiheng",
+  "license": "ISC",
+  "keywords": [
+    "fvue"
+  ],
+  "sideEffects": false,
+  "main": "index.ts",
+  "module": "dist/shared.esm-bundler.js",
+  "types": "dist/shared.d.ts",
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "buildOptions": {
+    "formats": [
+      "esm-bundler",
+      "cjs"
+    ]
+  }
+}

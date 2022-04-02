@@ -16,6 +16,15 @@ importers:
       vite: 3.0.4
       vitest: 0.20.2
 
+  packages/reactivity:
+    specifiers:
+      '@fvue/shared': 0.0.1
+    dependencies:
+      '@fvue/shared': link:../shared
+
+  packages/shared:
+    specifiers: {}
+
 packages:
 
   /@antfu/eslint-config-basic/0.25.2_iosr3hrei2tubxveewluhu5lhy:

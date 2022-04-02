@@ -1,9 +1,27 @@
 {
-  "name": "@fine-vue/reactivity",
+  "name": "@fvue/reactivity",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
-  "keywords": [],
   "author": "guoyiheng",
-  "license": "ISC"
+  "license": "ISC",
+  "keywords": [
+    "vue"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "buildOptions": {
+    "name": "FVueReactivity",
+    "formats": [
+      "esm-bundler",
+      "esm-browser",
+      "cjs",
+      "global"
+    ]
+  },
+  "dependencies": {
+    "@fvue/shared": "0.0.1"
+  }
 }
