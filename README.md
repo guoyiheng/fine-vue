@@ -19,7 +19,7 @@
   - [ ] isReactive
 - [x] effect
   - [x] track & trigger
-  - [ ] runner 
+  - [x] runner 
   - [ ] scheduler 
   - [ ] stop onStop
 - [ ] ref
