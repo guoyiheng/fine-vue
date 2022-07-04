@@ -1,14 +1,15 @@
 import { effect } from '../src/effect'
 import { reactive } from '../src'
 
-// copy from vue3 core repo
 describe('reactivity/effect', () => {
+// copy from vue3 core repo
   it('should run the passed function once (wrapped by a effect)', () => {
     const fnSpy = vitest.fn(() => {})
     effect(fnSpy)
     expect(fnSpy).toHaveBeenCalledTimes(1)
   })
 
+  // copy from vue3 core repo
   it('should observe basic properties', () => {
     let dummy
     const counter = reactive({ num: 0 })
@@ -19,6 +20,7 @@ describe('reactivity/effect', () => {
     expect(dummy).toBe(7)
   })
 
+  // copy from vue3 core repo
   it('should observe multiple properties', () => {
     let dummy
     const counter = reactive({ num1: 0, num2: 0 })
@@ -29,6 +31,7 @@ describe('reactivity/effect', () => {
     expect(dummy).toBe(21)
   })
 
+  // copy from vue3 core repo
   it('should handle multiple effects', () => {
     let dummy1, dummy2
     const counter = reactive({ num: 0 })
@@ -41,4 +44,81 @@ describe('reactivity/effect', () => {
     expect(dummy1).toBe(1)
     expect(dummy2).toBe(1)
   })
+
+  // copy from vue3 core repo
+  it('should discover new branches when running manually', () => {
+    let dummy
+    let run = false
+    const obj = reactive({ prop: 'value' })
+    const runner = effect(() => {
+      dummy = run ? obj.prop : 'other'
+    })
+
+    expect(dummy).toBe('other')
+    runner()
+    expect(dummy).toBe('other')
+    run = true
+    runner()
+    expect(dummy).toBe('value')
+    obj.prop = 'World'
+    expect(dummy).toBe('World')
+  })
+
+  // add by myself
+  it('should return runner when call effect ', () => {
+  //  runner => fn()
+    let dummy = 0
+    const runner = effect(() => {
+      dummy++
+      return dummy
+    })
+    expect(dummy).toBe(1)
+    runner()
+    expect(dummy).toBe(2)
+    expect(runner()).toBe(3)
+  })
+
+  // copy from vue3 core repo
+  // it('scheduler', () => {
+  //   let dummy
+  //   let run: any
+  //   const scheduler = jest.fn(() => {
+  //     run = runner
+  //   })
+  //   const obj = reactive({ foo: 1 })
+  //   const runner = effect(
+  //     () => {
+  //       dummy = obj.foo
+  //     },
+  //     { scheduler },
+  //   )
+  //   expect(scheduler).not.toHaveBeenCalled()
+  //   expect(dummy).toBe(1)
+  //   // should be called on first trigger
+  //   obj.foo++
+  //   expect(scheduler).toHaveBeenCalledTimes(1)
+  //   // should not run yet
+  //   expect(dummy).toBe(1)
+  //   // manually run
+  //   run()
+  //   // should have run
+  //   expect(dummy).toBe(2)
+  // })
+  // copy from vue3 core repo
+  // it('stop', () => {
+  //   let dummy
+  //   const obj = reactive({ prop: 1 })
+  //   const runner = effect(() => {
+  //     dummy = obj.prop
+  //   })
+  //   obj.prop = 2
+  //   expect(dummy).toBe(2)
+  //   stop(runner)
+  //   obj.prop = 3
+  //   expect(dummy).toBe(2)
+
+  //   // stopped effect should still be manually callable
+  //   runner()
+  //   expect(dummy).toBe(3)
+  // })
 })

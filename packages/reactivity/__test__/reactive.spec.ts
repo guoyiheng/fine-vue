@@ -1,7 +1,7 @@
 import { reactive } from '../src/reactive'
 
-// copy from vue3 core repo
 describe('reactivity/reactive', () => {
+// copy from vue3 core repo
   it('Object', () => {
     const original = { foo: 1 }
     const observed = reactive(original)
@@ -15,6 +15,7 @@ describe('reactivity/reactive', () => {
     // // ownKeys
     // expect(Object.keys(observed)).toEqual(['foo'])
   })
+  // copy from vue3 core repo
   it('non-observable values', () => {
     const assertValue = (value: any) => {
       const res = reactive(value)
