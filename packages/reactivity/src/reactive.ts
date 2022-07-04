@@ -6,13 +6,15 @@ export function reactive(target: any) {
     return target
 
   const proxy = new Proxy(target, {
-    get: (target, key, receiver) => {
+    get(target, key, receiver) {
+      const res = Reflect.get(target, key, receiver)
       track(target, key)
-      return Reflect.get(target, key, receiver)
+      return res
     },
-    set: (target, key, value, receiver) => {
+    set(target, key, value, receiver) {
+      const res = Reflect.set(target, key, value, receiver)
       trigger(target, key)
-      return Reflect.set(target, key, value, receiver)
+      return res
     },
   })
   return proxy

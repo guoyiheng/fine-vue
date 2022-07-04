@@ -7,9 +7,8 @@ class ReactiveEffect {
   }
 
   run() {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     activeEffect = this
-    console.log('==')
-
     this.fn()
   }
 }
@@ -41,6 +40,5 @@ export function trigger(target: object, key?: unknown) {
 
 export const effect = (fn: Function) => {
   const _effect = new ReactiveEffect(fn)
-  activeEffect = _effect
   _effect.run()
 }

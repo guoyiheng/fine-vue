@@ -12,9 +12,11 @@
 ## reactivity
 
 - [x] reactivity
-  - [ ] isReactive
-  - [ ] isReadonly
+  - [x] proxy
   - [ ] isProxy
+  - [ ] readonly
+  - [ ] isReadonly
+  - [ ] isReactive
 - [x] effect
   - [x] track & trigger
   - [ ] runner 
