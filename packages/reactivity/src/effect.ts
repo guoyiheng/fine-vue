@@ -48,8 +48,13 @@ interface effectOptions {
 }
 
 export const effect = (fn: Function, options: effectOptions = {}) => {
-  const _effect = new ReactiveEffect(fn, options.scheduler)
+  const _effect = new ReactiveEffect(fn)
+  // 参考vue源码，合并 options 到 _effect 中
+  if (options)
+    Object.assign(_effect, options)
+
   _effect.run()
+  // runner -> run 绑定作用域
   const runner = _effect.run.bind(_effect)
   return runner
 }
