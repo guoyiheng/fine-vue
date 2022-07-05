@@ -1,4 +1,4 @@
-import { reactive } from '../src/reactive'
+import { isReactive, reactive } from '../src/reactive'
 
 describe('reactivity/reactive', () => {
 // copy from vue3 core repo
@@ -6,14 +6,14 @@ describe('reactivity/reactive', () => {
     const original = { foo: 1 }
     const observed = reactive(original)
     expect(observed).not.toBe(original)
-    // expect(isReactive(observed)).toBe(true)
-    // expect(isReactive(original)).toBe(false)
-    // // get
-    // expect(observed.foo).toBe(1)
-    // // has
-    // expect('foo' in observed).toBe(true)
-    // // ownKeys
-    // expect(Object.keys(observed)).toEqual(['foo'])
+    expect(isReactive(observed)).toBe(true)
+    expect(isReactive(original)).toBe(false)
+    // get
+    expect(observed.foo).toBe(1)
+    // has
+    expect('foo' in observed).toBe(true)
+    // ownKeys
+    expect(Object.keys(observed)).toEqual(['foo'])
   })
   // copy from vue3 core repo
   it('non-observable values', () => {

@@ -1,4 +1,4 @@
-import { effect } from '../src/effect'
+import { effect, stop } from '../src/effect'
 import { reactive } from '../src'
 
 describe('reactivity/effect', () => {
@@ -106,20 +106,21 @@ describe('reactivity/effect', () => {
     expect(dummy).toBe(2)
   })
   // copy from vue3 core repo
-  // it('stop', () => {
-  //   let dummy
-  //   const obj = reactive({ prop: 1 })
-  //   const runner = effect(() => {
-  //     dummy = obj.prop
-  //   })
-  //   obj.prop = 2
-  //   expect(dummy).toBe(2)
-  //   stop(runner)
-  //   obj.prop = 3
-  //   expect(dummy).toBe(2)
+  // TODO
+  it.skip('stop', () => {
+    let dummy
+    const obj = reactive({ prop: 1 })
+    const runner = effect(() => {
+      dummy = obj.prop
+    })
+    obj.prop = 2
+    expect(dummy).toBe(2)
+    stop(runner)
+    obj.prop = 3
+    expect(dummy).toBe(2)
 
-  //   // stopped effect should still be manually callable
-  //   runner()
-  //   expect(dummy).toBe(3)
-  // })
+    // stopped effect should still be manually callable
+    runner()
+    expect(dummy).toBe(3)
+  })
 })

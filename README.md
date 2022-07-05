@@ -12,15 +12,16 @@
 ## reactivity
 
 - [x] reactivity
-  - [x] proxy
-  - [ ] isProxy
+  - [x] reactive
+  - [x] isReactive
+  - [ ] refactor baseHandler
   - [ ] readonly
   - [ ] isReadonly
-  - [ ] isReactive
+  - [ ] isProxy
 - [x] effect
   - [x] track & trigger
   - [x] runner 
-  - [ x scheduler 
+  - [x] scheduler 
   - [ ] stop onStop
 - [ ] ref
   - [ ] isRef

@@ -14,6 +14,22 @@ class ReactiveEffect {
   }
 }
 
+interface effectOptions {
+  scheduler?: Function
+}
+
+export const effect = (fn: Function, options: effectOptions = {}) => {
+  const _effect = new ReactiveEffect(fn)
+  // 参考vue源码，合并 options 到 _effect 中
+  if (options)
+    Object.assign(_effect, options)
+
+  _effect.run()
+  // runner -> run 绑定作用域
+  const runner = _effect.run.bind(_effect)
+  return runner
+}
+
 export function track(target: object, key?: unknown) {
   let depsMap = targetMap.get(target)
 
@@ -43,18 +59,3 @@ export function trigger(target: object, key?: unknown) {
   }
 }
 
-interface effectOptions {
-  scheduler?: Function
-}
-
-export const effect = (fn: Function, options: effectOptions = {}) => {
-  const _effect = new ReactiveEffect(fn)
-  // 参考vue源码，合并 options 到 _effect 中
-  if (options)
-    Object.assign(_effect, options)
-
-  _effect.run()
-  // runner -> run 绑定作用域
-  const runner = _effect.run.bind(_effect)
-  return runner
-}
