@@ -20,7 +20,7 @@
 - [x] effect
   - [x] track & trigger
   - [x] runner 
-  - [ ] scheduler 
+  - [ x scheduler 
   - [ ] stop onStop
 - [ ] ref
   - [ ] isRef
