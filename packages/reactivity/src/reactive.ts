@@ -1,5 +1,5 @@
 import { isObject } from '@fvue/shared'
-import { track, trigger } from './effect'
+import { mutableHandlers } from './baseHandlers'
 
 export const enum ReactiveFlags {
   SKIP = '__v_skip',
@@ -18,24 +18,13 @@ export interface Target {
 }
 
 export function reactive(target: any) {
+  return createReactiveObject (target, mutableHandlers)
+}
+
+function createReactiveObject(target: Target, baseHandlers: ProxyHandler<any>) {
   if (!isObject(target))
     return target
-
-  const proxy = new Proxy(target, {
-    get(target, key, receiver) {
-      if (key === ReactiveFlags.IS_REACTIVE)
-        return true
-
-      const res = Reflect.get(target, key, receiver)
-      track(target, key)
-      return res
-    },
-    set(target, key, value, receiver) {
-      const res = Reflect.set(target, key, value, receiver)
-      trigger(target, key)
-      return res
-    },
-  })
+  const proxy = new Proxy(target, baseHandlers)
   return proxy
 }
 
