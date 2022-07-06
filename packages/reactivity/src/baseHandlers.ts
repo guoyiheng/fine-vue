@@ -1,17 +1,23 @@
 import { track, trigger } from './effect'
 import type { Target } from './reactive'
 import { ReactiveFlags } from './reactive'
+import { warn } from './warning'
 
 const get = createGetter()
+const readonlyGet = createGetter(true)
 const set = createSetter()
 
-function createGetter() {
+function createGetter(isReadonly = false) {
   return function get(target: Target, key: string | symbol, receiver: object) {
     if (key === ReactiveFlags.IS_REACTIVE)
-      return true
+      return !isReadonly
+    else if (key === ReactiveFlags.IS_READONLY)
+      return isReadonly
 
     const res = Reflect.get(target, key, receiver)
-    track(target, key)
+    if (!isReadonly)
+      track(target, key)
+
     return res
   }
 }
@@ -27,4 +33,15 @@ function createSetter() {
 export const mutableHandlers: ProxyHandler<object> = {
   get,
   set,
+}
+
+export const readonlyHandlers: ProxyHandler<object> = {
+  get: readonlyGet,
+  set(target, key) {
+    warn(
+      `Set operation on key "${String(key)}" failed: target is readonly.`,
+      target,
+    )
+    return true
+  },
 }

@@ -14,15 +14,16 @@
 - [x] reactivity
   - [x] reactive
   - [x] isReactive
-  - [ ] refactor baseHandler
-  - [ ] readonly
-  - [ ] isReadonly
-  - [ ] isProxy
+  - [x] refactor baseHandler
+  - [x] readonly
+  - [x] isReadonly
+  - [x] isProxy
 - [x] effect
   - [x] track & trigger
   - [x] runner 
   - [x] scheduler 
   - [ ] stop onStop
+  - [ ] 嵌套effect问题
 - [ ] ref
   - [ ] isRef
   - [ ] unRef

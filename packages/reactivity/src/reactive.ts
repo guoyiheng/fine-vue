@@ -1,5 +1,5 @@
 import { isObject } from '@fvue/shared'
-import { mutableHandlers } from './baseHandlers'
+import { mutableHandlers, readonlyHandlers } from './baseHandlers'
 
 export const enum ReactiveFlags {
   SKIP = '__v_skip',
@@ -20,8 +20,12 @@ export interface Target {
 export function reactive(target: any) {
   return createReactiveObject (target, mutableHandlers)
 }
+export function readonly(target: any) {
+  return createReactiveObject (target, readonlyHandlers)
+}
 
 function createReactiveObject(target: Target, baseHandlers: ProxyHandler<any>) {
+  // 不需要创建proxy的场景，提前拦截
   if (!isObject(target))
     return target
   const proxy = new Proxy(target, baseHandlers)
@@ -31,3 +35,12 @@ function createReactiveObject(target: Target, baseHandlers: ProxyHandler<any>) {
 export function isReactive(value: unknown): boolean {
   return !!(value && (value as Target)[ReactiveFlags.IS_REACTIVE])
 }
+
+export function isReadonly(value: unknown): boolean {
+  return !!(value && (value as Target)[ReactiveFlags.IS_READONLY])
+}
+
+export function isProxy(value: unknown): boolean {
+  return isReactive(value) || isReadonly(value)
+}
+
