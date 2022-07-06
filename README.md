@@ -22,7 +22,8 @@
   - [x] track & trigger
   - [x] runner 
   - [x] scheduler 
-  - [ ] stop onStop
+  - [x] stop onStop
+    - [x] foo++ 导致 stop 失效问题
   - [ ] 嵌套effect问题
 - [ ] ref
   - [ ] isRef

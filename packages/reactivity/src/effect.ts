@@ -1,21 +1,50 @@
 let activeEffect: ReactiveEffect
+let shouldTrack: boolean
 const targetMap = new Map()
 
 class ReactiveEffect {
-  constructor(private fn: Function, private scheduler?: Function) {
-    this.fn = fn
-    this.scheduler = scheduler
+  // 存放当前 effect 相关 key 的依赖合集
+  private _fn: any
+  public scheduler?: Function
+  public onStop?: Function
+  public deps: any[] = []
+  public active = true
+
+  constructor(fn: Function) {
+    this._fn = fn
   }
 
   run() {
+    if (!this.active)
+      return this._fn()
+
+    shouldTrack = true
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     activeEffect = this
-    return this.fn()
+    const res = this._fn()
+    shouldTrack = false
+    return res
   }
+
+  stop() {
+    if (this.active) {
+      cleanEffect(this)
+      if (this.onStop)
+        this.onStop()
+    }
+    this.active = false
+  }
+}
+
+function cleanEffect(effect: ReactiveEffect) {
+  effect.deps.forEach((dep: any) => {
+    dep.delete(effect)
+  })
 }
 
 interface effectOptions {
   scheduler?: Function
+  onStop?: Function
 }
 
 export const effect = (fn: Function, options: effectOptions = {}) => {
@@ -26,11 +55,19 @@ export const effect = (fn: Function, options: effectOptions = {}) => {
 
   _effect.run()
   // runner -> run 绑定作用域
-  const runner = _effect.run.bind(_effect)
+  const runner: any = _effect.run.bind(_effect)
+  runner.effect = _effect
   return runner
 }
 
+export function stop(runner: any) {
+  runner.effect.stop()
+}
+
 export function track(target: object, key?: unknown) {
+  if (!isTracking())
+    return
+
   let depsMap = targetMap.get(target)
 
   if (!depsMap) {
@@ -45,7 +82,15 @@ export function track(target: object, key?: unknown) {
     depsMap.set(key, dep)
   }
 
+  if (!activeEffect)
+    return
+
   dep.add(activeEffect)
+  activeEffect.deps.push(dep)
+}
+
+function isTracking() {
+  return activeEffect !== undefined && shouldTrack
 }
 
 export function trigger(target: object, key?: unknown) {
