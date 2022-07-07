@@ -1,4 +1,4 @@
-import { isObject } from '@fvue/shared'
+import { extend, isObject } from '@fvue/shared'
 import { track, trigger } from './effect'
 import type { Target } from './reactive'
 import { ReactiveFlags, reactive, readonly } from './reactive'
@@ -54,6 +54,6 @@ export const readonlyHandlers: ProxyHandler<object> = {
     return true
   },
 }
-export const shallowReadonlyHandlers: ProxyHandler<object> = Object.assign({}, readonlyHandlers, {
+export const shallowReadonlyHandlers: ProxyHandler<object> = extend({}, readonlyHandlers, {
   get: shallowReadonlyGet,
 })

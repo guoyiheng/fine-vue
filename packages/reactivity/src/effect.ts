@@ -1,5 +1,7 @@
+import { extend } from '@fvue/shared'
+
 let activeEffect: ReactiveEffect
-let shouldTrack: boolean
+let shouldTrack = false
 const targetMap = new Map()
 
 class ReactiveEffect {
@@ -42,6 +44,10 @@ function cleanEffect(effect: ReactiveEffect) {
   })
 }
 
+export function stop(runner: any) {
+  runner.effect.stop()
+}
+
 interface effectOptions {
   scheduler?: Function
   onStop?: Function
@@ -51,7 +57,7 @@ export const effect = (fn: Function, options: effectOptions = {}) => {
   const _effect = new ReactiveEffect(fn)
   // 参考vue源码，合并 options 到 _effect 中
   if (options)
-    Object.assign(_effect, options)
+    extend(_effect, options)
 
   _effect.run()
   // runner -> run 绑定作用域
@@ -60,8 +66,8 @@ export const effect = (fn: Function, options: effectOptions = {}) => {
   return runner
 }
 
-export function stop(runner: any) {
-  runner.effect.stop()
+export function isTracking() {
+  return activeEffect !== undefined && shouldTrack
 }
 
 export function track(target: object, key?: unknown) {
@@ -82,23 +88,26 @@ export function track(target: object, key?: unknown) {
     depsMap.set(key, dep)
   }
 
-  if (!activeEffect)
-    return
-
-  dep.add(activeEffect)
-  activeEffect.deps.push(dep)
+  trackEffect(dep)
 }
 
-function isTracking() {
-  return activeEffect !== undefined && shouldTrack
+export function trackEffect(dep: any) {
+  if (dep.has(activeEffect))
+    return
+  dep.add(activeEffect)
+  activeEffect.deps.push(dep)
 }
 
 export function trigger(target: object, key?: unknown) {
   const depsMap = targetMap.get(target)
   const dep = depsMap.get(key)
+  triggerEffect(dep)
+}
+export function triggerEffect(dep: any) {
   for (const effect of dep) {
     if (effect.scheduler)
       effect.scheduler()
+
     else
       effect.run()
   }

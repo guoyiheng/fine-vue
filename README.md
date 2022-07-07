@@ -26,14 +26,14 @@
   - [x] stop onStop
     - [x] foo++ 导致 stop 失效问题
   - [ ] 嵌套effect问题
-- [ ] ref
-  - [ ] isRef
-  - [ ] unRef
+- [x] ref
+  - [x] isRef
+  - [x] unRef
 - [ ] proxyRefs
 - [ ] computed
 - [ ] watch
 - [ ] watchEffect
-- [ ] shapeFlags
+- [ ] shapeFlags 
 
 ## runtime-core
 
