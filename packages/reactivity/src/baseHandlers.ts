@@ -1,6 +1,7 @@
+import { isObject } from '@fvue/shared'
 import { track, trigger } from './effect'
 import type { Target } from './reactive'
-import { ReactiveFlags } from './reactive'
+import { ReactiveFlags, reactive, readonly } from './reactive'
 import { warn } from './warning'
 
 const get = createGetter()
@@ -15,6 +16,10 @@ function createGetter(isReadonly = false) {
       return isReadonly
 
     const res = Reflect.get(target, key, receiver)
+
+    if (isObject(res))
+      return isReadonly ? readonly(res) : reactive(res)
+
     if (!isReadonly)
       track(target, key)
 
