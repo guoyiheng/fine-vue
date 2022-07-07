@@ -3,10 +3,10 @@ let shouldTrack: boolean
 const targetMap = new Map()
 
 class ReactiveEffect {
-  // 存放当前 effect 相关 key 的依赖合集
   private _fn: any
   public scheduler?: Function
   public onStop?: Function
+  // 存放当前 effect 相关 key 的依赖合集
   public deps: any[] = []
   public active = true
 

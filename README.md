@@ -16,6 +16,7 @@
   - [x] isReactive
   - [x] refactor baseHandler
   - [x] readonly
+  - [x] shallowReadonly
   - [x] isReadonly
   - [x] isProxy
 - [x] effect

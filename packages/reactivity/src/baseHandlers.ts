@@ -6,9 +6,10 @@ import { warn } from './warning'
 
 const get = createGetter()
 const readonlyGet = createGetter(true)
+const shallowReadonlyGet = createGetter(true, true)
 const set = createSetter()
 
-function createGetter(isReadonly = false) {
+function createGetter(isReadonly = false, shallow = false) {
   return function get(target: Target, key: string | symbol, receiver: object) {
     if (key === ReactiveFlags.IS_REACTIVE)
       return !isReadonly
@@ -16,6 +17,9 @@ function createGetter(isReadonly = false) {
       return isReadonly
 
     const res = Reflect.get(target, key, receiver)
+
+    if (shallow)
+      return res
 
     if (isObject(res))
       return isReadonly ? readonly(res) : reactive(res)
@@ -50,3 +54,6 @@ export const readonlyHandlers: ProxyHandler<object> = {
     return true
   },
 }
+export const shallowReadonlyHandlers: ProxyHandler<object> = Object.assign({}, readonlyHandlers, {
+  get: shallowReadonlyGet,
+})

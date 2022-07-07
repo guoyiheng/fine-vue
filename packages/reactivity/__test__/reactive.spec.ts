@@ -1,4 +1,4 @@
-import { isReactive, reactive } from '../src/reactive'
+import { isProxy, isReactive, reactive } from '../src/reactive'
 
 describe('reactivity/reactive', () => {
 // copy from vue3 core repo
@@ -7,6 +7,7 @@ describe('reactivity/reactive', () => {
     const observed = reactive(original)
     expect(observed).not.toBe(original)
     expect(isReactive(observed)).toBe(true)
+    expect(isProxy(observed)).toBe(true)
     expect(isReactive(original)).toBe(false)
     // get
     expect(observed.foo).toBe(1)

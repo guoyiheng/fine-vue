@@ -1,5 +1,5 @@
 import { isObject } from '@fvue/shared'
-import { mutableHandlers, readonlyHandlers } from './baseHandlers'
+import { mutableHandlers, readonlyHandlers, shallowReadonlyHandlers } from './baseHandlers'
 
 export const enum ReactiveFlags {
   SKIP = '__v_skip',
@@ -22,6 +22,9 @@ export function reactive(target: any) {
 }
 export function readonly(target: any) {
   return createReactiveObject (target, readonlyHandlers)
+}
+export function shallowReadonly(target: any) {
+  return createReactiveObject (target, shallowReadonlyHandlers)
 }
 
 function createReactiveObject(target: Target, baseHandlers: ProxyHandler<any>) {
