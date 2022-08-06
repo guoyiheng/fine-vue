@@ -21,11 +21,11 @@ function createGetter(isReadonly = false, shallow = false) {
     if (shallow)
       return res
 
-    if (isObject(res))
-      return isReadonly ? readonly(res) : reactive(res)
-
     if (!isReadonly)
       track(target, key)
+
+    if (isObject(res))
+      return isReadonly ? readonly(res) : reactive(res)
 
     return res
   }

@@ -1,5 +1,5 @@
 import { hasChanged, isObject } from '@fvue/shared'
-import { isTracking, trackEffect, triggerEffect } from './effect'
+import { isTracking, trackEffects, triggerEffects } from './effect'
 import { reactive } from './reactive'
 
 class RefImpl {
@@ -16,7 +16,7 @@ class RefImpl {
 
   get value() {
     if (isTracking())
-      trackEffect(this.dep)
+      trackEffects(this.dep)
     return this._value
   }
 
@@ -24,7 +24,7 @@ class RefImpl {
     if (hasChanged(newVal, this._rawValue)) {
       this._value = convert(newVal)
       this._rawValue = newVal
-      triggerEffect(this.dep)
+      triggerEffects(this.dep)
     }
   }
 }

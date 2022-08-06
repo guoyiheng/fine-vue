@@ -88,10 +88,10 @@ export function track(target: object, key?: unknown) {
     depsMap.set(key, dep)
   }
 
-  trackEffect(dep)
+  trackEffects(dep)
 }
 
-export function trackEffect(dep: any) {
+export function trackEffects(dep: any) {
   if (dep.has(activeEffect))
     return
   dep.add(activeEffect)
@@ -101,9 +101,9 @@ export function trackEffect(dep: any) {
 export function trigger(target: object, key?: unknown) {
   const depsMap = targetMap.get(target)
   const dep = depsMap.get(key)
-  triggerEffect(dep)
+  triggerEffects(dep)
 }
-export function triggerEffect(dep: any) {
+export function triggerEffects(dep: any) {
   for (const effect of dep) {
     if (effect.scheduler)
       effect.scheduler()
