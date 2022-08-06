@@ -29,7 +29,7 @@
 - [x] ref
   - [x] isRef
   - [x] unRef
-- [ ] proxyRefs
+- [x] proxyRefs
 - [ ] computed
 - [ ] watch
 - [ ] watchEffect

@@ -1,6 +1,6 @@
 import { hasChanged, isObject } from '@fvue/shared'
 import { isTracking, trackEffects, triggerEffects } from './effect'
-import { reactive } from './reactive'
+import { isReactive, reactive } from './reactive'
 
 class RefImpl {
   private _value: any
@@ -42,3 +42,24 @@ export function isRef(ref: any) {
 export function unref(ref: any) {
   return isRef(ref) ? ref.value : ref
 }
+
+const shallowUnwrapHandlers: ProxyHandler<any> = {
+  get: (target, key, receiver) => unref(Reflect.get(target, key, receiver)),
+  set: (target, key, value, receiver) => {
+    const oldValue = target[key]
+    if (isRef(oldValue) && !isRef(value)) {
+      oldValue.value = value
+      return true
+    }
+    else {
+      return Reflect.set(target, key, value, receiver)
+    }
+  },
+}
+
+export function proxyRefs<T extends object>(objectWithRefs: T) {
+  return isReactive(objectWithRefs)
+    ? objectWithRefs
+    : new Proxy(objectWithRefs, shallowUnwrapHandlers)
+}
+
