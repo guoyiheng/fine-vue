@@ -4,26 +4,22 @@ let activeEffect: ReactiveEffect
 let shouldTrack = false
 const targetMap = new Map()
 
-class ReactiveEffect {
-  private _fn: any
-  public scheduler?: Function
+export class ReactiveEffect {
   public onStop?: Function
   // 存放当前 effect 相关 key 的依赖合集
   public deps: any[] = []
   public active = true
 
-  constructor(fn: Function) {
-    this._fn = fn
-  }
+  constructor(public fn: Function, public scheduler?: Function) {}
 
   run() {
     if (!this.active)
-      return this._fn()
+      return this.fn()
 
     shouldTrack = true
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     activeEffect = this
-    const res = this._fn()
+    const res = this.fn()
     shouldTrack = false
     return res
   }
